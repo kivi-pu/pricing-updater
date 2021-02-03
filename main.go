@@ -23,7 +23,7 @@ func main() {
 		panic(fmt.Errorf("failed to read file content at path %s: %w", os.Args[1], err))
 	}
 
-	pushFile(content, "my-pricing-test", "my-pricing-test.github.io", "public/products.xml", "updated products")
+	pushFile(content, "kivi-pu", "products", "products.xml", "updated products")
 }
 
 func pushFile(content []byte, owner, repo, path, message string) error {
