@@ -23,7 +23,11 @@ func main() {
 		panic(fmt.Errorf("failed to read file content at path %s: %w", os.Args[1], err))
 	}
 
-	pushFile(content, "kivi-pu", "products", "products.xml", "updated products")
+	err = pushFile(content, "kivi-pu", "products", "products.xml", "updated products")
+
+	if err != nil {
+		panic(err)
+	}
 }
 
 func pushFile(content []byte, owner, repo, path, message string) error {
@@ -37,7 +41,7 @@ func pushFile(content []byte, owner, repo, path, message string) error {
 	file, _, _, err := client.Repositories.GetContents(ctx, owner, repo, path, nil)
 
 	if err != nil {
-		return fmt.Errorf("failed to push file to github: %w", err)
+		return fmt.Errorf("failed to get file from github: %w", err)
 	}
 
 	_, _, err = client.Repositories.UpdateFile(ctx, owner, repo, path, &github.RepositoryContentFileOptions{
