@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 
 	"github.com/google/go-github/github"
@@ -32,6 +34,10 @@ func main() {
 
 func pushFile(content []byte, owner, repo, path, message string) error {
 	ctx := context.Background()
+
+	httpClient := &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}}
+
+	ctx = context.WithValue(ctx, oauth2.HTTPClient, httpClient)
 
 	client := github.NewClient(oauth2.NewClient(
 		ctx,
